@@ -65,26 +65,27 @@ colors = (
     (0, 1, 1),
 )
 
-ground_vertices = (
-    (-10, -1, 20),
-    (10, -1, 20),
-    (10, -1, -100),
-    (-10, -1, -100),
-    )
+# ground_vertices = (
+
+#     (-10, -1, 20),
+#     (10, -1, 20),
+#     (10, -1, -100),
+#     (-10, -1, -100),
+#     )
 
 
-def ground():
-    glBegin(GL_QUADS)
-    for vertex in ground_vertices:
-        glColor3fv((0, 0.5, 0.5))
-        glVertex3fv(vertex)
-    glEnd()
+# def ground():
+#     glBegin(GL_QUADS)
+#     for vertex in ground_vertices:
+#         glColor3fv((0, 0.5, 0.5))
+#         glVertex3fv(vertex)
+#     glEnd()
 
 
-def set_vertices(max_distance):
+def set_vertices(max_distance, min_distance=-20):
     x_value_change = rd.randrange(-10, 10)
-    y_value_change = 0  # rd.randrange(-10, 10)
-    z_value_change = rd.randrange(-1 * max_distance, -20)
+    y_value_change = rd.randrange(-10, 10)
+    z_value_change = rd.randrange(-1 * max_distance, min_distance)
 
     new_vertices = []
 
@@ -125,15 +126,15 @@ def main():
     display = (800, 600)
     pygame.display.set_mode(display, DOUBLEBUF | OPENGL)
 
-    gluPerspective(45, (display[0]/display[1]), 0.1, 50.0)
+    max_dist = 100
+
+    gluPerspective(45, (display[0]/display[1]), 0.1, max_dist)
 
     # glTranslatef(rd.randrange(-5, 5), rd.randrange(-5, 5), -40.0)
 
     # glRotatef(25, 2, 1, 0)
     x_vel = 0
     y_vel = 0
-
-    max_dist = 100
 
     cube_dict = {}
 
@@ -174,10 +175,23 @@ def main():
 
         glTranslatef(x_vel, y_vel, 0.5)
 
-        ground()
+        # ground()
 
         for each_cube in cube_dict:
             Cube(cube_dict[each_cube])
+
+        # delete_list = []
+
+        for each_cube in cube_dict:
+            if camera_z <= cube_dict[each_cube][0][2]:
+                print("Passed a Cube!")
+                # delete_list.append(each_cube)
+                new_max = int(-1 * (camera_z - max_dist))
+                print("New Max :" + str(new_max))
+                print("Camera Z:" + str(camera_z))
+                
+                cube_dict[each_cube] = set_vertices(new_max, int(camera_z))
+
         pygame.display.flip()
         pygame.time.wait(10)
 
