@@ -82,9 +82,13 @@ colors = (
 #     glEnd()
 
 
-def set_vertices(max_distance, min_distance=-20):
-    x_value_change = rd.randrange(-10, 10)
-    y_value_change = rd.randrange(-10, 10)
+def set_vertices(max_distance, min_distance=-20, camera_x=0, camera_y=0):
+
+    camera_x = 1 * int(camera_x)
+    camera_y = 1 * int(camera_y)
+
+    x_value_change = rd.randrange(camera_x - 75, camera_x + 75)
+    y_value_change = rd.randrange(camera_y - 75, camera_y + 75)
     z_value_change = rd.randrange(-1 * max_distance, min_distance)
 
     new_vertices = []
@@ -130,15 +134,22 @@ def main():
 
     gluPerspective(45, (display[0]/display[1]), 0.1, max_dist)
 
-    # glTranslatef(rd.randrange(-5, 5), rd.randrange(-5, 5), -40.0)
+    glTranslatef(0,0, -40.0)
 
     # glRotatef(25, 2, 1, 0)
+
+    cur_x = 0
+    cur_y = 0
+
     x_vel = 0
     y_vel = 0
 
+    game_speed = 2
+    player_speed = 2
+
     cube_dict = {}
 
-    for x in range(20):
+    for x in range(75):
         cube_dict[x] = set_vertices(max_dist)
 
     # object_passed = False
@@ -151,13 +162,13 @@ def main():
 
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_LEFT:
-                    x_vel = 0.3
+                    x_vel = player_speed
                 if event.key == pygame.K_RIGHT:
-                    x_vel = -0.3
+                    x_vel = -player_speed
                 if event.key == pygame.K_UP:
-                    y_vel = -0.3
+                    y_vel = -player_speed
                 if event.key == pygame.K_DOWN:
-                    y_vel = 0.3
+                    y_vel = player_speed
 
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
@@ -171,9 +182,12 @@ def main():
         camera_y = x[3][1]
         camera_z = x[3][2]
 
+        cur_x += x_vel
+        cur_y += y_vel
+
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 
-        glTranslatef(x_vel, y_vel, 0.5)
+        glTranslatef(x_vel, y_vel, game_speed)
 
         # ground()
 
@@ -186,14 +200,16 @@ def main():
             if camera_z <= cube_dict[each_cube][0][2]:
                 print("Passed a Cube!")
                 # delete_list.append(each_cube)
-                new_max = int(-1 * (camera_z - max_dist))
-                print("New Max :" + str(new_max))
-                print("Camera Z:" + str(camera_z))
-                
-                cube_dict[each_cube] = set_vertices(new_max, int(camera_z))
+                new_max = int(-1 * (camera_z - (max_dist * 2)))
+                cube_dict[each_cube] = set_vertices(new_max,
+                                                    int(camera_z) - max_dist,
+                                                    cur_x,
+                                                    cur_y)
+                print(camera_x)
+                print(cur_x)
 
         pygame.display.flip()
-        pygame.time.wait(10)
+        # pygame.time.wait(10)
 
 
 main()
