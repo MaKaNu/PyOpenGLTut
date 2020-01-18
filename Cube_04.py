@@ -65,10 +65,25 @@ colors = (
     (0, 1, 1),
 )
 
+ground_vertices = (
+    (-10, -1, 20),
+    (10, -1, 20),
+    (10, -1, -100),
+    (-10, -1, -100),
+    )
+
+
+def ground():
+    glBegin(GL_QUADS)
+    for vertex in ground_vertices:
+        glColor3fv((0, 0.5, 0.5))
+        glVertex3fv(vertex)
+    glEnd()
+
 
 def set_vertices(max_distance):
     x_value_change = rd.randrange(-10, 10)
-    y_value_change = rd.randrange(-10, 10)
+    y_value_change = 0  # rd.randrange(-10, 10)
     z_value_change = rd.randrange(-1 * max_distance, -20)
 
     new_vertices = []
@@ -112,17 +127,17 @@ def main():
 
     gluPerspective(45, (display[0]/display[1]), 0.1, 50.0)
 
-    glTranslatef(rd.randrange(-5, 5), rd.randrange(-5, 5), -40.0)
+    # glTranslatef(rd.randrange(-5, 5), rd.randrange(-5, 5), -40.0)
 
     # glRotatef(25, 2, 1, 0)
     x_vel = 0
     y_vel = 0
 
-    max_dist = 300
+    max_dist = 100
 
     cube_dict = {}
 
-    for x in range(75):
+    for x in range(20):
         cube_dict[x] = set_vertices(max_dist)
 
     # object_passed = False
@@ -158,6 +173,8 @@ def main():
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 
         glTranslatef(x_vel, y_vel, 0.5)
+
+        ground()
 
         for each_cube in cube_dict:
             Cube(cube_dict[each_cube])
