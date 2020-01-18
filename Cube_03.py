@@ -122,8 +122,6 @@ def main():
                 if event.rel[1] < 0:
                     glRotatef(1, 0, event.rel[1], 0)
 
-
-
         # glRotatef(1, 3, 1, 1) #Rotate Automatic
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
         Cube()
