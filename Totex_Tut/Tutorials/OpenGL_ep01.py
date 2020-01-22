@@ -1,11 +1,13 @@
 import glfw
 
+# Create a Window
+
 # Initialize GLFW Lib
 if not glfw.init():
     raise Exception("GLFW can not be initialzed!")
 
 # Create a Window
-window = glfw.create_window(1920, 1080, "My OpenGL Window", None, None)
+window = glfw.create_window(800, 600, "My OpenGL Window", None, None)
 
 # Check if Window is created
 if not window:
@@ -13,7 +15,7 @@ if not window:
     raise Exception("GLFW window can not be created!")
 
 # set Window Position
-glfw.set_window_pos(window, 0, 0)
+glfw.set_window_pos(window, 400, 200)
 
 # make the context current
 glfw.make_context_current(window)
