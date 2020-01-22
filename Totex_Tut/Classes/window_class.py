@@ -21,7 +21,7 @@ class Window:
         # make the context current
         glfw.make_context_current(self._window)
 
-    def main_loop(self):
+    def window_loop(self):
         # The main application loop
         while not glfw.window_should_close(self._window):
             glfw.poll_events()
@@ -33,5 +33,5 @@ class Window:
 
 
 if __name__ == "__main__":
-    win = Window(1280, 720, "My OpenGL window")
-    win.main_loop
+    mywin = Window(1280, 720, "My OpenGL window")
+    mywin.window_loop()
