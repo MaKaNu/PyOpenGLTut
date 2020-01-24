@@ -41,7 +41,7 @@ uniform sampler2D s_texture;
 
 void main()
 {
-    out_color = texture(s_texture, v_texture);
+    out_color = texture(s_texture, v_texture) * vec4(v_color, 1.0f);
 }
 """
 
